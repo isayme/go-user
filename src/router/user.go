@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isayme/go-user/src/constant"
 	"github.com/isayme/go-user/src/dao"
+	"github.com/isayme/go-user/src/httperror"
 	"github.com/isayme/go-user/src/jwt"
 	"github.com/isayme/go-user/src/schema"
 )
@@ -34,20 +35,17 @@ type SignupRequest struct {
 func (u *User) Signup(c *gin.Context) {
 	var body SignupRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		panic(httperror.InvalidParams.WithErr(err))
 	}
 
 	user, err := u.db.Signup(body.Username, body.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		panic(err)
 	}
 
 	token, err := generateAccessToken(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		panic(err)
 	}
 
 	c.Header(constant.HTTPHeaderAuthorization, token)
@@ -65,20 +63,17 @@ type LoginRequest struct {
 func (u *User) Login(c *gin.Context) {
 	var body LoginRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		panic(httperror.InvalidParams.WithErr(err))
 	}
 
 	user, err := u.db.Login(body.Username, body.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		panic(err)
 	}
 
 	token, err := generateAccessToken(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		panic(err)
 	}
 
 	c.Header(constant.HTTPHeaderAuthorization, token)
@@ -91,8 +86,7 @@ func (u *User) Me(c *gin.Context) {
 	userID, _ := c.Get(constant.UserIDKey)
 	user, err := u.db.Me(bson.ObjectIdHex(userID.(string)))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		panic(err)
 	}
 
 	c.JSON(http.StatusOK, user)

@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -12,14 +11,14 @@ import (
 
 const tokenPrefix = "Bearer "
 
+// AuthorizeRequired access token require and verify
 func AuthorizeRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := mustMetToken(c)
 
 		claims, err := jwt.Verify(token)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-			return
+			panic(err)
 		}
 
 		userID := claims.Get("uid")

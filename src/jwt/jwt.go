@@ -3,11 +3,13 @@ package jwt
 import "time"
 import "github.com/SermoDigital/jose/jws"
 import "github.com/SermoDigital/jose/jwt"
+import "github.com/SermoDigital/jose/crypto"
 import "github.com/isayme/go-user/src/conf"
+import "github.com/isayme/go-user/src/httperror"
 
 // Verify verify token and return claims
 func Verify(token string) (jwt.Claims, error) {
-	jwt, err := jws.ParseJWT([]byte(token))
+	t, err := jws.ParseJWT([]byte(token))
 	if err != nil {
 		return nil, err
 	}
@@ -16,9 +18,12 @@ func Verify(token string) (jwt.Claims, error) {
 	method := jws.GetSigningMethod(cfg.JWT.Method)
 
 	for _, key := range cfg.JWT.Keys {
-		if err = jwt.Validate([]byte(key), method); err != nil {
-			// fail, try next key
-			continue
+		if err = t.Validate([]byte(key), method); err != nil {
+			// try next key only if signature invalid
+			if err == crypto.ErrSignatureInvalid {
+				continue
+			}
+			break
 		} else {
 			// success
 			break
@@ -26,10 +31,10 @@ func Verify(token string) (jwt.Claims, error) {
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, httperror.AccessTokenInvalid.WithMsg(err.Error())
 	}
 
-	return jwt.Claims(), nil
+	return t.Claims(), nil
 }
 
 // Sign generate token

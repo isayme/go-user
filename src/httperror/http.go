@@ -8,11 +8,18 @@ import (
 // HTTPError http error
 type HTTPError struct {
 	Status int
+	Name   string
 	Msg    string
 }
 
 func (err HTTPError) Error() string {
-	return fmt.Sprintf("stauts: %d, msg: %s", err.Status, err.Msg)
+	return fmt.Sprintf("%s: %s", err.Name, err.Msg)
+}
+
+// WithName return copy error with given name
+func (err HTTPError) WithName(name string) *HTTPError {
+	err.Name = name
+	return &err
 }
 
 // WithMsg return copy error with given msg
@@ -27,20 +34,26 @@ func (err HTTPError) WithStatus(status int) *HTTPError {
 	return &err
 }
 
+// WithMsg return copy error with given error
+func (err HTTPError) WithErr(e error) *HTTPError {
+	err.Msg = e.Error()
+	return &err
+}
+
 var err = HTTPError{}
 
 // common http error
 var (
-	InvalidParams       = err.WithStatus(http.StatusBadRequest)
-	Forbidden           = err.WithStatus(http.StatusForbidden)
-	Unauthorized        = err.WithStatus(http.StatusUnauthorized)
-	InternalServerError = err.WithStatus(http.StatusInternalServerError)
+	InvalidParams       = err.WithName("InvalidParams").WithStatus(http.StatusBadRequest)
+	Forbidden           = err.WithName("Forbidden").WithStatus(http.StatusForbidden)
+	Unauthorized        = err.WithName("Unauthorized").WithStatus(http.StatusUnauthorized)
+	InternalServerError = err.WithName("InternalServerError").WithStatus(http.StatusInternalServerError)
 )
 
 // business error
 var (
-	AccessTokenRequired = Unauthorized.WithMsg("access token required")
-	AccessTokenInvalid  = Unauthorized.WithMsg("access token invalid")
+	AccessTokenRequired = Unauthorized.WithName("AccessTokenRequired").WithMsg("access token required")
+	AccessTokenInvalid  = Unauthorized.WithName("AccessTokenInvalid").WithMsg("access token invalid")
 
-	UsernamePasswordNotMatch = Unauthorized.WithMsg("username/password not match")
+	UsernamePasswordNotMatch = Unauthorized.WithName("UsernamePasswordNotMatch").WithMsg("username/password not match")
 )
