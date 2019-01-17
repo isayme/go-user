@@ -1,0 +1,17 @@
+{
+  "http": {
+    "port": 0
+  },
+  "logger": {
+    "level": "debug"
+  },
+  "mongo": {
+    "addrs": ["127.0.0.1:27017"],
+    "database": "user_test"
+  },
+  "jwt": {
+    "method": "HS256",
+    "expire": "1h",
+    "keys": ["123456", "abcdef"]
+  }
+}
