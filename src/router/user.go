@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/globalsign/mgo/bson"
@@ -93,8 +94,13 @@ func (u *User) Me(c *gin.Context) {
 }
 
 func generateAccessToken(user *schema.User) (string, error) {
-	return jwt.Sign(map[string]interface{}{
+	token, err := jwt.Sign(map[string]interface{}{
 		"uid":      user.ID,
 		"username": user.Username,
 	})
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("Bearer %s", token), nil
 }
