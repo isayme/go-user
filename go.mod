@@ -4,6 +4,7 @@ require (
 	code.teambition.com/soa/go-lib v1.1.0 // indirect
 	code.teambition.com/soa/teampush v1.0.9 // indirect
 	github.com/SermoDigital/jose v0.9.2-0.20180104203859-803625baeddc
+	github.com/drexedam/gravatar v0.0.0-20170403222345-e4917c5607c3
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8

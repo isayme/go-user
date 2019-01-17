@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"github.com/drexedam/gravatar"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	"github.com/isayme/go-user/src/httperror"
@@ -22,7 +23,7 @@ func NewUser(session *mongo.Session) *User {
 }
 
 // Signup ...
-func (u *User) Signup(username, password string) (*schema.User, error) {
+func (u *User) Signup(username, email, password string) (*schema.User, error) {
 	s, c := u.session.GetCollection("users")
 	defer s.Close()
 
@@ -30,6 +31,8 @@ func (u *User) Signup(username, password string) (*schema.User, error) {
 	user := &schema.User{
 		ID:       bson.NewObjectId(),
 		Username: username,
+		Email:    email,
+		Avatar:   gravatar.New(email).AvatarURL(),
 		Created:  now,
 		Updated:  now,
 	}
@@ -49,25 +52,25 @@ func (u *User) Signup(username, password string) (*schema.User, error) {
 }
 
 // Login ...
-func (u *User) Login(username, password string) (*schema.User, error) {
+func (u *User) Login(email, password string) (*schema.User, error) {
 	s, c := u.session.GetCollection("users")
 	defer s.Close()
 
 	var user schema.User
 
 	selector := bson.M{
-		"username": username,
+		"email": email,
 	}
 	err := c.Find(selector).One(&user)
 	if err != nil {
 		if err == mgo.ErrNotFound {
-			return nil, httperror.UsernamePasswordNotMatch
+			return nil, httperror.EmailPasswordNotMatch
 		}
 		return nil, err
 	}
 
 	if passwordUtil.Compare(user.Password, password) == false {
-		return nil, httperror.UsernamePasswordNotMatch
+		return nil, httperror.EmailPasswordNotMatch
 	}
 
 	return &user, nil

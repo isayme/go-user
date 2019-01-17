@@ -29,6 +29,7 @@ func NewUser(db *dao.User) *User {
 // SignupRequest signup request body
 type SignupRequest struct {
 	Username string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
 
@@ -39,7 +40,7 @@ func (u *User) Signup(c *gin.Context) {
 		panic(httperror.InvalidParams.WithErr(err))
 	}
 
-	user, err := u.db.Signup(body.Username, body.Password)
+	user, err := u.db.Signup(body.Username, body.Email, body.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -56,7 +57,7 @@ func (u *User) Signup(c *gin.Context) {
 
 // LoginRequest login request body
 type LoginRequest struct {
-	Username string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
@@ -67,7 +68,7 @@ func (u *User) Login(c *gin.Context) {
 		panic(httperror.InvalidParams.WithErr(err))
 	}
 
-	user, err := u.db.Login(body.Username, body.Password)
+	user, err := u.db.Login(body.Email, body.Password)
 	if err != nil {
 		panic(err)
 	}

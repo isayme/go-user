@@ -55,5 +55,5 @@ var (
 	AccessTokenRequired = Unauthorized.WithName("AccessTokenRequired").WithMsg("access token required")
 	AccessTokenInvalid  = Unauthorized.WithName("AccessTokenInvalid").WithMsg("access token invalid")
 
-	UsernamePasswordNotMatch = Unauthorized.WithName("UsernamePasswordNotMatch").WithMsg("username/password not match")
+	EmailPasswordNotMatch = Unauthorized.WithName("EmailPasswordNotMatch").WithMsg("email/password not match")
 )
