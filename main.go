@@ -24,7 +24,7 @@ func main() {
 	}
 
 	if *showVersion {
-		fmt.Printf("%s: %s\n", util.Name, util.Version)
+		fmt.Printf("name: %s\nversion: %s\nbuildTime: %s\ngitRevision: %s\n", util.Name, util.Version, util.BuildTime, util.GitRevision)
 		os.Exit(0)
 	}
 

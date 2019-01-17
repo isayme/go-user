@@ -12,8 +12,10 @@ import (
 func registerRouter(app *App) {
 	app.r.GET("/version", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"name":    util.Name,
-			"version": util.Version,
+			"name":        util.Name,
+			"version":     util.Version,
+			"buildTime":   util.BuildTime,
+			"gitRevision": util.GitRevision,
 		})
 	})
 

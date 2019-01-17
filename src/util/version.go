@@ -1,7 +1,9 @@
 package util
 
-// Name service name
-var Name = "unknown"
-
-// Version version
-var Version = "unknown"
+// app info
+var (
+	Name        = "unknown"
+	Version     = "unknown"
+	BuildTime   = "unknown"
+	GitRevision = "unknown"
+)
