@@ -2,10 +2,12 @@ package conf
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"sync"
 
+	duration "github.com/isayme/go-duration"
 	logger "github.com/isayme/go-logger"
 )
 
@@ -39,9 +41,9 @@ type Mongo struct {
 
 // JWT jwt config
 type JWT struct {
-	Method string   `json:"method"`
-	Keys   []string `json:"keys"`
-	Expire Duration `json:"expire"`
+	Method string            `json:"method"`
+	Keys   []string          `json:"keys"`
+	Expire duration.Duration `json:"expire"`
 }
 
 var once sync.Once
@@ -60,6 +62,8 @@ func Get() *Config {
 		if err := json.Unmarshal(data, &config); err != nil {
 			panic(err)
 		}
+
+		fmt.Printf("%v\n", config)
 	})
 
 	return &config

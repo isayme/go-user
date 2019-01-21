@@ -12,6 +12,8 @@ github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8 h1:DujepqpGd1hyOd7a
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
+github.com/isayme/go-duration v0.0.0-20190121023039-b6ca365f3b51 h1:NgaKKm6yMX3ur1rRpEE0NjrQ7ekujCO/MkdkaR2lYLk=
+github.com/isayme/go-duration v0.0.0-20190121023039-b6ca365f3b51/go.mod h1:aWXBQD/2TFYRZAGUg0mr3ExKG6+PUQsWzVnmkiTw2fY=
 github.com/isayme/go-logger v0.0.0-20181206095945-ec2b689320b9 h1:S3hqIsrL50Z+ts1kEX3cO9rcEgB5XRAHMhxiHlwkTWY=
 github.com/isayme/go-logger v0.0.0-20181206095945-ec2b689320b9/go.mod h1:BQvQ0HihAvU/Ndzqf4MFCQYJkDZE4C6adymqDYsCH14=
 github.com/isayme/go-requestbin v0.0.0-20181206101234-c9c300f9d607 h1:9RFWOuIXYi+tHZYNvKHF+BVO5PlSFH6a6Nzk7qRuMM4=
